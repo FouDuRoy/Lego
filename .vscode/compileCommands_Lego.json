@@ -1,0 +1,58 @@
+[
+	{
+		"file": "C:\\Users\\Olivier\\Documents\\Unreal Projects\\Lego\\Source\\Lego\\Lego.Build.cs",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Olivier\\Documents\\Unreal Projects\\Lego\\.vscode\\compileCommands_Lego\\Lego.1.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.3\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Olivier\\Documents\\Unreal Projects\\Lego\\Source\\Lego\\Lego.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Olivier\\Documents\\Unreal Projects\\Lego\\.vscode\\compileCommands_Lego\\Lego.1.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.3\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Olivier\\Documents\\Unreal Projects\\Lego\\Source\\Lego\\Lego.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Olivier\\Documents\\Unreal Projects\\Lego\\.vscode\\compileCommands_Lego\\Lego.1.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.3\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Olivier\\Documents\\Unreal Projects\\Lego\\Source\\Lego\\LegoCharacter.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Olivier\\Documents\\Unreal Projects\\Lego\\.vscode\\compileCommands_Lego\\Lego.1.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.3\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Olivier\\Documents\\Unreal Projects\\Lego\\Source\\Lego\\LegoCharacter.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Olivier\\Documents\\Unreal Projects\\Lego\\.vscode\\compileCommands_Lego\\Lego.1.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.3\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Olivier\\Documents\\Unreal Projects\\Lego\\Source\\Lego\\LegoGameMode.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Olivier\\Documents\\Unreal Projects\\Lego\\.vscode\\compileCommands_Lego\\Lego.1.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.3\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Olivier\\Documents\\Unreal Projects\\Lego\\Source\\Lego\\LegoGameMode.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Olivier\\Documents\\Unreal Projects\\Lego\\.vscode\\compileCommands_Lego\\Lego.1.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.3\\Engine\\Source"
+	}
+]
