@@ -3,9 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputMappingContext.h"
+#include "LegoConstruction.h"
+#include "EngineUtils.h"
+#include "EnhancedInputSubsystems.h"
+#include "Animation/AnimMontage.h"
+#include "TimerManager.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "LegoCharacter.generated.h"
+
 
 class USpringArmComponent;
 class UCameraComponent;
@@ -43,10 +50,28 @@ class ALegoCharacter : public ACharacter
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
+	/** Construction Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* ConstructAction;
+
+	/** Reference to the player movement input, DO.NOT.TOUCH! */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	UInputMappingContext* MovementMappingContext;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	UInputMappingContext* ConstructionMappingContext;  // IMC pour la construction (E)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Construction", meta = (AllowPrivateAccess = "true"))
+	ALegoConstruction* LegoConstruction;
 
 public:
 	ALegoCharacter();
-	
+	/** Search animation */
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	UAnimMontage* BuildMontage;
+
+	FTimerHandle LoopAnimationTimer; // Transition
 
 protected:
 
@@ -60,6 +85,12 @@ protected:
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void StartBuilding();
+
+	void LoopBuilding();
+
+	void StopBuilding();
 	
 	// To add mapping context
 	virtual void BeginPlay();
@@ -69,5 +100,7 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+
 };
 

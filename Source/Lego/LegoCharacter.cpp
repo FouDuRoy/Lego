@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Engine/Engine.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -65,7 +66,15 @@ void ALegoCharacter::BeginPlay()
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+			Subsystem->AddMappingContext(ConstructionMappingContext, 1);
 		}
+	}
+
+	// Recherche d'un acteur de type ALegoConstruction dans la scène
+	for (TActorIterator<ALegoConstruction> It(GetWorld()); It; ++It)
+	{
+		LegoConstruction = *It;
+		break; // Prend seulement la première instance trouvée
 	}
 }
 
@@ -86,10 +95,96 @@ void ALegoCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ALegoCharacter::Look);
+
+		EnhancedInputComponent->BindAction(ConstructAction, ETriggerEvent::Started, this, &ALegoCharacter::StartBuilding);
+		EnhancedInputComponent->BindAction(ConstructAction, ETriggerEvent::Completed, this, &ALegoCharacter::StopBuilding);
 	}
 	else
 	{
 		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
+	}
+}
+
+void ALegoCharacter::StartBuilding()
+{
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, TEXT("StartBuilding() appelé !"));
+	}
+
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	if (PlayerController)
+	{
+		UEnhancedInputLocalPlayerSubsystem* InputSubsystem =
+			ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+
+		if (InputSubsystem && MovementMappingContext)
+		{
+			InputSubsystem->RemoveMappingContext(MovementMappingContext);
+		}
+	}
+
+	if (BuildMontage && GetMesh() && GetMesh()->GetAnimInstance())
+	{
+		// Joue l'animation de mise à genoux
+		float KneelDuration = GetMesh()->GetAnimInstance()->Montage_Play(BuildMontage, 1.0f);
+		GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("BuildingStarting"), BuildMontage);
+
+		// Transition vers l'animation de boucle après la fin
+		GetWorldTimerManager().SetTimer(LoopAnimationTimer, this, &ALegoCharacter::LoopBuilding, KneelDuration, false);
+	}
+	if (LegoConstruction)
+	{
+		LegoConstruction->StartConstruction();
+	}
+}
+
+void ALegoCharacter::LoopBuilding()
+{
+	if (BuildMontage && GetMesh() && GetMesh()->GetAnimInstance())
+	{
+		GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("BuildingLoop"), BuildMontage);
+	}
+}
+
+void ALegoCharacter::StopBuilding()
+{
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("StopBuilding() appelé !"));
+	}
+
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	if (PlayerController)
+	{
+		UEnhancedInputLocalPlayerSubsystem* InputSubsystem =
+			ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+
+		if (InputSubsystem && MovementMappingContext)
+		{
+			InputSubsystem->AddMappingContext(MovementMappingContext, 0);
+		}
+	}
+
+
+	if (BuildMontage && GetMesh() && GetMesh()->GetAnimInstance())
+	{
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+		// Vérifie si on est en train de jouer le montage
+		if (AnimInstance->Montage_IsPlaying(BuildMontage))
+		{
+			// Stoppe immédiatement le montage en cours (évite qu'il recommence au début)
+			AnimInstance->Montage_Stop(0.1f, BuildMontage);
+
+			// Reprend directement à la section "BuildingStopped"
+			AnimInstance->Montage_JumpToSection(FName("BuildingStopped"), BuildMontage);
+		}
+	}
+	if (LegoConstruction)
+	{
+		LegoConstruction->StopConstruction();
 	}
 }
 
